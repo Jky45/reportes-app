@@ -4,6 +4,7 @@ export const routes: Routes = [
   {
     path: 'reports',
     loadChildren: () =>
-      import('./features/reports/reports.module').then((m) => m.ReportsModule),
+      import('./features/reports/reports.routes').then((m) => m.routes),
   },
+  { path: '', redirectTo: 'reports', pathMatch: 'full' }, // redirección importante
 ];
