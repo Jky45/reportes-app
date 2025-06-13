@@ -1,10 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule, formatDate } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Report } from '../../../../core/models/report.model';
-import { formatDate } from '@angular/common';
+import { Report, ReportStatus } from '../../../../core/models/report.model';
 
 @Component({
   selector: 'app-reports-table',
@@ -15,6 +14,10 @@ import { formatDate } from '@angular/common';
 })
 export class ReportsTableComponent {
   @Input() reports: Report[] = [];
+
+  // 👇 Salidas hacia el componente padre
+  @Output() edit = new EventEmitter<Report>();
+  @Output() delete = new EventEmitter<Report>();
 
   displayedColumns: string[] = ['name', 'status', 'date', 'description', 'actions'];
 
@@ -27,18 +30,18 @@ export class ReportsTableComponent {
   }
 
   canEdit(report: Report): boolean {
-    return report.status === 'Pendiente';
+    return report.status === ReportStatus.Pendiente;
   }
 
   canDelete(report: Report): boolean {
-    return report.status === 'Pendiente' || report.status === 'Cancelada';
+    return report.status === ReportStatus.Pendiente || report.status === ReportStatus.Cancelada;
   }
 
   onEdit(report: Report): void {
-    console.log('Editar:', report);
+    this.edit.emit(report); 
   }
 
   onDelete(report: Report): void {
-    console.log('Eliminar:', report);
+    this.delete.emit(report); 
   }
 }

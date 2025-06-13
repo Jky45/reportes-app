@@ -1,3 +1,7 @@
-<p>reports-page works!</p>
-<h2>📋 Lista de reportes</h2>
-<app-reports-table [reports]="reports" />
+<app-reports-filters (filterChange)="onFilterChange($event)"></app-reports-filters>
+
+<app-reports-table
+  [reports]="filteredReports"
+  (edit)="onEdit($event)"
+  (delete)="onDelete($event)">
+</app-reports-table>

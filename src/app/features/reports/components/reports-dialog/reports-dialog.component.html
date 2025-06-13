@@ -1,1 +1,20 @@
-<p>reports-dialog works!</p>
+<h2>Editar Reporte</h2>
+
+<mat-form-field appearance="fill" style="width: 100%">
+  <mat-label>Descripción</mat-label>
+  <textarea matInput [(ngModel)]="editableReport.description" rows="4"></textarea>
+</mat-form-field>
+
+<mat-form-field appearance="fill" style="width: 100%">
+  <mat-label>Estado</mat-label>
+  <mat-select [(ngModel)]="editableReport.status">
+    <mat-option *ngFor="let status of statusOptions" [value]="status">
+      {{ status }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div style="text-align: right; margin-top: 16px;">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Guardar</button>
+</div>

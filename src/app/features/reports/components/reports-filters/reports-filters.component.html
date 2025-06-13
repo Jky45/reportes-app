@@ -1,1 +1,20 @@
-<p>reports-filters works!</p>
+<div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+    <mat-form-field appearance="outline">
+      <mat-label>Buscar por nombre</mat-label>
+      <input matInput [(ngModel)]="nameFilter" placeholder="Ej. María">
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Filtrar por estado</mat-label>
+      <mat-select [(ngModel)]="statusFilter">
+        <mat-option value="">Todos</mat-option>
+        <mat-option [value]="ReportStatus.Pendiente">Pendiente</mat-option>
+        <mat-option [value]="ReportStatus.Resuelta">Resuelta</mat-option>
+        <mat-option [value]="ReportStatus.Cancelada">Cancelada</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <button mat-raised-button color="primary" (click)="applyFilters()">Aplicar</button>
+    <button mat-stroked-button color="warn" (click)="clearFilters()">Limpiar</button>
+  </div>
+  
