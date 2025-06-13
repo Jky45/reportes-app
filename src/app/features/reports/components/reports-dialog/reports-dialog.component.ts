@@ -29,7 +29,6 @@ export class ReportsDialogComponent {
     public dialogRef: MatDialogRef<ReportsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Report
   ) {
-    // Clonamos el objeto para evitar mutaciones hasta guardar
     this.editableReport = { ...data };
   }
 

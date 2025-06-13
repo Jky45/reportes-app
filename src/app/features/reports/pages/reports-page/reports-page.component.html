@@ -1,4 +1,8 @@
-<app-reports-filters (filterChange)="onFilterChange($event)"></app-reports-filters>
+<app-reports-filters
+  [initialName]="currentNameFilter"
+  [initialStatus]="currentStatusFilter"
+  (filterChange)="applyFilters($event)">
+</app-reports-filters>
 
 <app-reports-table
   [reports]="filteredReports"

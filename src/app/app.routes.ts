@@ -6,5 +6,5 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/reports/reports.routes').then((m) => m.routes),
   },
-  { path: '', redirectTo: 'reports', pathMatch: 'full' }, // redirección importante
+  { path: '', redirectTo: 'reports', pathMatch: 'full' },
 ];

@@ -1,20 +1,21 @@
-<h2>Editar Reporte</h2>
+<h2 mat-dialog-title>Editar Reporte</h2>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill" style="width: 100%">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput [(ngModel)]="editableReport.description"></textarea>
+  </mat-form-field>
 
-<mat-form-field appearance="fill" style="width: 100%">
-  <mat-label>Descripción</mat-label>
-  <textarea matInput [(ngModel)]="editableReport.description" rows="4"></textarea>
-</mat-form-field>
+  <mat-form-field appearance="fill" style="width: 100%">
+    <mat-label>Estado</mat-label>
+    <mat-select [(ngModel)]="editableReport.status">
+      <mat-option *ngFor="let status of statusOptions" [value]="status">
+        {{ status }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 
-<mat-form-field appearance="fill" style="width: 100%">
-  <mat-label>Estado</mat-label>
-  <mat-select [(ngModel)]="editableReport.status">
-    <mat-option *ngFor="let status of statusOptions" [value]="status">
-      {{ status }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-
-<div style="text-align: right; margin-top: 16px;">
+<div mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancelar</button>
   <button mat-raised-button color="primary" (click)="onSave()">Guardar</button>
 </div>

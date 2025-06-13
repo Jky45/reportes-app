@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -14,12 +14,22 @@ import { ReportStatus } from '../../../../core/models/report.model';
   styleUrls: ['./reports-filters.component.scss']
 })
 export class ReportsFiltersComponent {
+  @Input() initialName: string = '';
+  @Input() initialStatus: string = '';
+
   nameFilter: string = '';
   statusFilter: string = '';
 
   readonly ReportStatus = ReportStatus; 
 
   @Output() filterChange = new EventEmitter<{ name: string, status: string }>();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialName'] || changes['initialStatus']) {
+      this.nameFilter = this.initialName || '';
+      this.statusFilter = this.initialStatus || '';
+    }
+  }
 
   applyFilters() {
     this.filterChange.emit({
@@ -31,6 +41,6 @@ export class ReportsFiltersComponent {
   clearFilters() {
     this.nameFilter = '';
     this.statusFilter = '';
-    this.applyFilters(); // Emite filtros vacíos
+    this.applyFilters();
   }
 }

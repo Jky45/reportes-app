@@ -15,7 +15,6 @@ import { Report, ReportStatus } from '../../../../core/models/report.model';
 export class ReportsTableComponent {
   @Input() reports: Report[] = [];
 
-  // 👇 Salidas hacia el componente padre
   @Output() edit = new EventEmitter<Report>();
   @Output() delete = new EventEmitter<Report>();
 

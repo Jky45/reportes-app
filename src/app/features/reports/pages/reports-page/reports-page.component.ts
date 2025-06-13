@@ -6,6 +6,7 @@ import { ReportsTableComponent } from '../../components/reports-table/reports-ta
 import { ReportsFiltersComponent } from '../../components/reports-filters/reports-filters.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ReportsDialogComponent } from '../../components/reports-dialog/reports-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -16,29 +17,53 @@ import { ReportsDialogComponent } from '../../components/reports-dialog/reports-
   imports: [
     CommonModule,
     ReportsTableComponent,
-    ReportsFiltersComponent // 👈 agregamos los filtros
+    ReportsFiltersComponent
   ]
 })
 export class ReportsPageComponent implements OnInit {
   reports: Report[] = [];
   filteredReports: Report[] = [];
 
-  constructor(private reportsService: ReportsService, private dialog: MatDialog) {}
+  currentNameFilter = '';
+  currentStatusFilter = '';
+
+  constructor(
+    private reportsService: ReportsService,
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+  
 
   ngOnInit(): void {
     this.reportsService.getReports().subscribe((data) => {
-      console.log('📄 Datos de reportes:', data);
       this.reports = data;
-      this.filteredReports = data; // inicialmente sin filtros
+  
+      const name = this.route.snapshot.queryParamMap.get('name') || '';
+      const status = this.route.snapshot.queryParamMap.get('status') || '';
+  
+      this.applyFilters({ name, status });
     });
   }
+  
 
-  onFilterChange(filter: { name: string, status: string }) {
+  applyFilters(filter: { name: string; status: string }) {
     this.filteredReports = this.reports.filter((report) => {
       const fullName = `${report.name} ${report.surname}`.toLowerCase();
-      const matchesName = fullName.includes(filter.name);
+      const matchesName = fullName.includes(filter.name.toLowerCase());
       const matchesStatus = filter.status ? report.status === filter.status : true;
       return matchesName && matchesStatus;
+    });
+  
+    this.currentNameFilter = filter.name;
+    this.currentStatusFilter = filter.status;
+  
+    this.router.navigate([], {
+      queryParams: {
+        name: filter.name || null,
+        status: filter.status || null
+      },
+      queryParamsHandling: 'merge'
     });
   }
 
@@ -49,7 +74,6 @@ export class ReportsPageComponent implements OnInit {
   
     dialogRef.afterClosed().subscribe((result: Report | undefined) => {
       if (result) {
-        // Aquí harías un PUT al servidor y actualizarías la lista
         console.log('✅ Reporte editado:', result);
       }
     });
