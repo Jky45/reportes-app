@@ -1,7 +1,11 @@
 <div class="reports-layout">
     <!-- Sidebar con filtros -->
     <aside class="filters-sidebar">
-      <app-reports-filters (filterChange)="applyFilters($event)"></app-reports-filters>
+      <app-reports-filters
+        [nameFilter]="currentNameFilter"
+        [statusFilter]="currentStatusFilter"
+        (filterChange)="applyFilters($event)">
+      </app-reports-filters>
     </aside>
   
     <!-- Contenido principal -->
@@ -10,7 +14,7 @@
         <h2 class="reports-title">📄 Reportes</h2>
         <div class="scrollable-table">
           <app-reports-table
-            [reports]="filteredReports"
+            [reports]="filteredReports()"
             (edit)="onEdit($event)"
             (delete)="onDelete($event)">
           </app-reports-table>

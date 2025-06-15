@@ -1,46 +1,38 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 import { Report } from '../models/report.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReportsStoreService {
-  private reportsSubject = new BehaviorSubject<Report[]>([]);
-  private filteredReportsSubject = new BehaviorSubject<Report[]>([]);
+  reports = signal<Report[]>([]);
+  filteredReports = signal<Report[]>([]);
 
-  public readonly reports$: Observable<Report[]> = this.reportsSubject.asObservable();
-  public readonly filteredReports$: Observable<Report[]> = this.filteredReportsSubject.asObservable();
-
-  // Setters
   setReports(reports: Report[]) {
-    this.reportsSubject.next(reports);
-    // this.setFilteredReports(reports);
+    this.reports.set(reports);
   }
 
   setFilteredReports(filtered: Report[]) {
-    this.filteredReportsSubject.next(filtered);
+    this.filteredReports.set(filtered);
   }
 
-  // Getters
   getCurrentReports(): Report[] {
-    return this.reportsSubject.getValue();
+    return this.reports();
   }
 
   getCurrentFilteredReports(): Report[] {
-    return this.filteredReportsSubject.getValue();
+    return this.filteredReports();
   }
 
-  // Modificadores
   updateReport(updated: Report) {
-    const current = this.getCurrentReports();
-    const updatedList = current.map((r) => (r.id === updated.id ? updated : r));
-    this.setReports(updatedList);
+    const updatedList = this.reports().map(r =>
+      r.id === updated.id ? updated : r
+    );
+    this.reports.set(updatedList);
   }
 
   deleteReport(id: number) {
-    const current = this.getCurrentReports();
-    const updatedList = current.filter((r) => r.id !== id);
-    this.setReports(updatedList);
+    const updatedList = this.reports().filter(r => r.id !== id);
+    this.reports.set(updatedList);
   }
 }

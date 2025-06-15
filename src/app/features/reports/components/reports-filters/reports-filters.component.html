@@ -1,12 +1,12 @@
 <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
     <mat-form-field appearance="outline">
       <mat-label>Buscar por nombre</mat-label>
-      <input matInput [(ngModel)]="nameFilter" placeholder="Ej. María">
+      <input matInput [(ngModel)]="internalName" placeholder="Ej. María" />
     </mat-form-field>
   
     <mat-form-field appearance="outline">
       <mat-label>Filtrar por estado</mat-label>
-      <mat-select [(ngModel)]="statusFilter">
+      <mat-select [(ngModel)]="internalStatus">
         <mat-option value="">Todos</mat-option>
         <mat-option [value]="ReportStatus.Pendiente">Pendiente</mat-option>
         <mat-option [value]="ReportStatus.Resuelta">Resuelta</mat-option>

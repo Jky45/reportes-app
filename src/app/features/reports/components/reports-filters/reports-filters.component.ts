@@ -14,33 +14,35 @@ import { ReportStatus } from '../../../../core/models/report.model';
   styleUrls: ['./reports-filters.component.scss']
 })
 export class ReportsFiltersComponent {
-  @Input() initialName: string = '';
-  @Input() initialStatus: string = '';
+  @Input() nameFilter: string = '';
+  @Input() statusFilter: string = '';
 
-  nameFilter: string = '';
-  statusFilter: string = '';
+  internalName: string = '';
+  internalStatus: string = '';
 
   readonly ReportStatus = ReportStatus; 
 
   @Output() filterChange = new EventEmitter<{ name: string, status: string }>();
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['initialName'] || changes['initialStatus']) {
-      this.nameFilter = this.initialName || '';
-      this.statusFilter = this.initialStatus || '';
+    if (changes['nameFilter']) {
+      this.internalName = this.nameFilter;
+    }
+    if (changes['statusFilter']) {
+      this.internalStatus = this.statusFilter;
     }
   }
 
   applyFilters() {
     this.filterChange.emit({
-      name: this.nameFilter.trim().toLowerCase(),
-      status: this.statusFilter
+      name: this.internalName.trim().toLowerCase(),
+      status: this.internalStatus
     });
   }
 
   clearFilters() {
-    this.nameFilter = '';
-    this.statusFilter = '';
+    this.internalName = '';
+    this.internalStatus = '';
     this.applyFilters();
   }
 }
