@@ -4,7 +4,7 @@ Aplicación desarrollada con Angular para visualizar, filtrar, editar y eliminar
 
 ---
 
-## 🚀 ¿Cómo ejecutar el proyecto?
+## ¿Cómo ejecutar el proyecto?
 
 ### 1. Clona el repositorio
 
@@ -41,7 +41,7 @@ La aplicación se recargará automáticamente cada vez que guardes cambios.
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 El proyecto sigue una arquitectura modular basada en separación de responsabilidades y buenas prácticas de Angular:
 
@@ -65,7 +65,7 @@ src/
 
 ---
 
-## 🧠 Decisiones Técnicas
+## Decisiones Técnicas
 
 
 ### 🟦 1. Arquitectura basada en casos de uso (Use Cases)
@@ -78,7 +78,7 @@ Se optó por una arquitectura limpia que separa claramente las **responsabilidad
 
 ---
 
-### ⚙️ 2. Manejo del estado con Signals (`@angular/core`)
+### 2. Manejo del estado con Signals (`@angular/core`)
 En lugar de usar `BehaviorSubject` y Observables, se utilizó `signal` para el manejo reactivo del estado:
 - `reports`: Lista total de reportes
 - `filteredReports`: Lista filtrada por nombre y estado
@@ -86,7 +86,7 @@ En lugar de usar `BehaviorSubject` y Observables, se utilizó `signal` para el m
 
 ---
 
-### 🎨 3. Angular Material como sistema de diseño
+### 3. Angular Material como sistema de diseño
 Se usaron componentes de Angular Material para una experiencia de usuario consistente:
 - `mat-table` para la tabla de reportes
 - `mat-select`, `mat-form-field`, `mat-dialog` para filtros y formularios
@@ -94,7 +94,7 @@ Se usaron componentes de Angular Material para una experiencia de usuario consis
 
 ---
 
-### 📋 4. Formularios reactivos para edición
+### 4. Formularios reactivos para edición
 Se utilizó `ReactiveFormsModule` para el formulario del diálogo de edición:
 - Validación con `Validators.required`
 - Recolección del valor mediante `form.value`
@@ -102,13 +102,13 @@ Se utilizó `ReactiveFormsModule` para el formulario del diálogo de edición:
 
 ---
 
-### 🔍 5. Sin backend, pero con lógica realista
+### 5. Sin backend, pero con lógica realista
 Aunque no se conecta a un servidor real, el `ReportsService` simula llamadas HTTP (`get`, `put`, `delete`), y la app actúa como si fuera una SPA con comunicación real.
 
 
 ---
 
-## 📝 Justificación Técnica
+## Justificación Técnica
 
 Durante el desarrollo de esta aplicación se tomaron decisiones que, si bien en un escenario pequeño o sin backend podrían parecer innecesarias, fueron adoptadas con el propósito de **simular un entorno profesional y realista**.
 
@@ -118,5 +118,3 @@ El uso de casos de uso, servicios especializados, formularios reactivos y Signal
 - Representar una aplicación escalable en el tiempo.
 - Facilitar pruebas, mantenibilidad y extensión de funcionalidades.
 - Demostrar dominio de herramientas modernas del ecosistema Angular (Angular 17+, Angular Material, Signals, etc.).
-
-En resumen, **la prioridad fue construir una aplicación sólida, clara y profesional**, como se esperaría en un entorno de trabajo real.
