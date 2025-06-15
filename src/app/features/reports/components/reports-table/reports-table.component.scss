@@ -12,7 +12,7 @@
   }
   
   .table-container {
-    height: 500px; // Altura total del bloque tabla + paginador
+    height: 500px; 
     display: flex;
     flex-direction: column;
     border: 1px solid #e0e0e0;
@@ -21,7 +21,7 @@
   }
   
   .table-body-scroll {
-    flex: 1; // Ocupa todo menos el paginator
+    flex: 1; 
     overflow-y: auto;
     position: relative;
   }
@@ -31,7 +31,6 @@
     border-collapse: collapse;
   }
   
-  /* ✅ Cabecera fija al hacer scroll */
   th.mat-header-cell {
     position: sticky;
     top: 0;
@@ -44,7 +43,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
-  /* ✅ Estilos para filas */
   td.mat-cell {
     padding: 12px;
     border-bottom: 1px solid #ddd;
@@ -63,7 +61,6 @@
     background-color: #f1f1f1;
   }
   
-  /* ✅ Paginador fijo abajo del contenedor */
   .paginator {
     border-top: 1px solid #e0e0e0;
     padding: 8px;

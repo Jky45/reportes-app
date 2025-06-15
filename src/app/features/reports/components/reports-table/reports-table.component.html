@@ -1,10 +1,8 @@
 <div class="table-wrapper">
   <h2 class="reports-title">📄 Reportes</h2>
 
-  <!-- Contenedor de altura fija -->
   <div class="table-container">
 
-    <!-- Tabla scrolleable -->
     <div class="table-body-scroll">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" [style.minWidth.px]="800">
 
@@ -32,7 +30,6 @@
           <td mat-cell *matCellDef="let report"> {{ report.description }} </td>
         </ng-container>
 
-        <!-- Acciones -->
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Acciones </th>
           <td mat-cell *matCellDef="let report">
@@ -50,7 +47,6 @@
       </table>
     </div>
 
-    <!-- Paginador fijo al final -->
     <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons>
     </mat-paginator>
 

@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Report, ReportStatus } from '../../../../core/models/report.model';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { After } from 'v8';
 
 @Component({
   selector: 'app-reports-table',

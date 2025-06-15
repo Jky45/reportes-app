@@ -2,7 +2,6 @@
 
 <form [formGroup]="form" (ngSubmit)="onSave()">
   <div mat-dialog-content>
-    <!-- Campo Descripción -->
     <mat-form-field appearance="fill" style="width: 100%">
       <mat-label>Descripción</mat-label>
       <textarea matInput formControlName="description"></textarea>
@@ -11,7 +10,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Campo Estado -->
     <mat-form-field appearance="fill" style="width: 100%">
       <mat-label>Estado</mat-label>
       <mat-select formControlName="status">
