@@ -1,59 +1,122 @@
-# ReportesApp
+# 📄 Reportes App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+Aplicación desarrollada con Angular para visualizar, filtrar, editar y eliminar reportes.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 ¿Cómo ejecutar el proyecto?
+
+### 1. Clona el repositorio
+
+```bash
+git clone https://github.com/Jky45/reportes-app.git
+cd reportes-app
+```
+
+### 2. Instala las dependencias
+
+```bash
+npm install
+```
+
+### 3. Asegúrate de tener instalado Node.js (v18+) y Angular CLI de forma global
+
+```bash
+npm install -g @angular/cli
+```
+
+### 4. Ejecuta el servidor de desarrollo
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Luego abre tu navegador en:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+http://localhost:4200/
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+La aplicación se recargará automáticamente cada vez que guardes cambios.
 
-```bash
-ng generate --help
+---
+
+## 📁 Estructura del Proyecto
+
+El proyecto sigue una arquitectura modular basada en separación de responsabilidades y buenas prácticas de Angular:
+
 ```
 
-## Building
+src/
+├── app/
+│   ├── core/
+│   │   ├── models/              # Interfaces y enums compartidos (Report, ReportStatus, etc.)
+│   │   ├── services/            # Servicios reutilizables (API, filtros)
+│   │   ├── state/               # Manejo de estado global con Signals (store)
+│   │   └── use-cases/           # Casos de uso que encapsulan la lógica de negocio
+│   ├── features/
+│   │   └── reports/
+│   │       ├── components/      # Componentes reutilizables (tabla, filtros, diálogos)
+│   │       └── pages/           # Páginas principales (composición de componentes)
+│   └── app.config.ts           # Configuración de rutas y otros settings
+└── assets/                     # Archivos estáticos como JSON de datos
 
-To build the project run:
-
-```bash
-ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## 🧠 Decisiones Técnicas
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
-```bash
-ng test
-```
+### 🟦 1. Arquitectura basada en casos de uso (Use Cases)
+Se optó por una arquitectura limpia que separa claramente las **responsabilidades**:
+- Los **componentes** solo manejan la vista y eventos del usuario.
+- La **lógica de negocio** está encapsulada en clases dentro de `/core/use-cases/`.
+- Los **servicios** (como `ReportsService`) se encargan de simular la interacción con una API.
+- El **estado global** se maneja con Signals en `ReportsStoreService`.
 
-## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+---
 
-```bash
-ng e2e
-```
+### ⚙️ 2. Manejo del estado con Signals (`@angular/core`)
+En lugar de usar `BehaviorSubject` y Observables, se utilizó `signal` para el manejo reactivo del estado:
+- `reports`: Lista total de reportes
+- `filteredReports`: Lista filtrada por nombre y estado
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### 🎨 3. Angular Material como sistema de diseño
+Se usaron componentes de Angular Material para una experiencia de usuario consistente:
+- `mat-table` para la tabla de reportes
+- `mat-select`, `mat-form-field`, `mat-dialog` para filtros y formularios
+
+
+---
+
+### 📋 4. Formularios reactivos para edición
+Se utilizó `ReactiveFormsModule` para el formulario del diálogo de edición:
+- Validación con `Validators.required`
+- Recolección del valor mediante `form.value`
+
+
+---
+
+### 🔍 5. Sin backend, pero con lógica realista
+Aunque no se conecta a un servidor real, el `ReportsService` simula llamadas HTTP (`get`, `put`, `delete`), y la app actúa como si fuera una SPA con comunicación real.
+
+
+---
+
+## 📝 Justificación Técnica
+
+Durante el desarrollo de esta aplicación se tomaron decisiones que, si bien en un escenario pequeño o sin backend podrían parecer innecesarias, fueron adoptadas con el propósito de **simular un entorno profesional y realista**.
+
+Se buscó aplicar principios de arquitectura limpia, separación de responsabilidades y buenas prácticas en el manejo del estado, incluso si algunas de estas técnicas no eran estrictamente necesarias para un proyecto de esta escala.
+
+El uso de casos de uso, servicios especializados, formularios reactivos y Signals permite:
+- Representar una aplicación escalable en el tiempo.
+- Facilitar pruebas, mantenibilidad y extensión de funcionalidades.
+- Demostrar dominio de herramientas modernas del ecosistema Angular (Angular 17+, Angular Material, Signals, etc.).
+
+En resumen, **la prioridad fue construir una aplicación sólida, clara y profesional**, como se esperaría en un entorno de trabajo real.
