@@ -5,34 +5,37 @@ import { Report } from '../models/report.model';
   providedIn: 'root',
 })
 export class ReportsStoreService {
-  reports = signal<Report[]>([]);
-  filteredReports = signal<Report[]>([]);
+  private readonly _reports = signal<ReadonlyArray<Report>>([]);
+  private readonly _filteredReports = signal<ReadonlyArray<Report>>([]);
 
-  setReports(reports: Report[]) {
-    this.reports.set(reports);
+  readonly reports = this._reports.asReadonly();
+  readonly filteredReports = this._filteredReports.asReadonly();
+
+  setReports(reports: Report[]): void {
+    this._reports.set(reports);
   }
 
-  setFilteredReports(filtered: Report[]) {
-    this.filteredReports.set(filtered);
+  setFilteredReports(filtered: Report[]): void {
+    this._filteredReports.set(filtered);
   }
 
   getCurrentReports(): Report[] {
-    return this.reports();
+    return this._reports() as Report[];
   }
 
   getCurrentFilteredReports(): Report[] {
-    return this.filteredReports();
+    return this._filteredReports() as Report[];
   }
 
-  updateReport(updated: Report) {
-    const updatedList = this.reports().map(r =>
-      r.id === updated.id ? updated : r
+  updateReport(updated: Report): void {
+    this._reports.update(reports =>
+      reports.map(r => (r.id === updated.id ? updated : r))
     );
-    this.reports.set(updatedList);
   }
 
-  deleteReport(id: number) {
-    const updatedList = this.reports().filter(r => r.id !== id);
-    this.reports.set(updatedList);
+  deleteReport(id: number): void {
+    this._reports.update(reports =>
+      reports.filter(r => r.id !== id)
+    );
   }
 }

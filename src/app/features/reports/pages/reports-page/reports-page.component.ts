@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,6 +14,8 @@ import { UpdateReportUseCase } from '../../../../core/use-cases/update-report.us
 import { DeleteReportUseCase } from '../../../../core/use-cases/delete-report.use-case';
 import { Report } from '../../../../core/models/report.model';
 
+import { Subject, takeUntil } from 'rxjs';
+
 @Component({
   selector: 'app-reports-page',
   standalone: true,
@@ -21,17 +23,16 @@ import { Report } from '../../../../core/models/report.model';
   templateUrl: './reports-page.component.html',
   styleUrls: ['./reports-page.component.scss'],
 })
-export class ReportsPageComponent implements OnInit {
-
-  private store = inject(ReportsStoreService);
-  private filterReports = inject(FilterReportsUseCase);
-  private loadReports = inject(LoadReportsUseCase);
-  private updateReport = inject(UpdateReportUseCase);
-  private deleteReport = inject(DeleteReportUseCase);
-
-  private dialog = inject(MatDialog);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
+export class ReportsPageComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  private readonly store = inject(ReportsStoreService);
+  private readonly reportsFilterer = inject(FilterReportsUseCase);
+  private readonly reportsLoader = inject(LoadReportsUseCase);
+  private readonly reportsUpdater = inject(UpdateReportUseCase);
+  private readonly reportsDeleter = inject(DeleteReportUseCase);
+  private readonly dialog = inject(MatDialog);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   readonly filteredReports = this.store.filteredReports;
 
@@ -39,22 +40,33 @@ export class ReportsPageComponent implements OnInit {
   currentStatusFilter = '';
 
   ngOnInit(): void {
-    const name = this.route.snapshot.queryParamMap.get('name') || '';
-    const status = this.route.snapshot.queryParamMap.get('status') || '';
+    this.reportsLoader.execute()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.route.queryParamMap
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((params) => {
+            const name = params.get('name') || '';
+            const status = params.get('status') || '';
 
-    this.currentNameFilter = name;
-    this.currentStatusFilter = status;
+            this.currentNameFilter = name;
+            this.currentStatusFilter = status;
 
-    this.loadReports.execute().subscribe(() => {
-      this.applyFilters({ name, status });
-    });
+            this.applyFilters({ name, status });
+          });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   applyFilters(filter: { name: string; status: string }) {
     this.currentNameFilter = filter.name;
     this.currentStatusFilter = filter.status;
 
-    this.filterReports.execute(filter);
+    this.reportsFilterer.execute(filter);
 
     this.router.navigate([], {
       queryParams: {
@@ -68,24 +80,30 @@ export class ReportsPageComponent implements OnInit {
   onEdit(report: Report): void {
     const dialogRef = this.dialog.open(ReportsDialogComponent, { data: report });
 
-    dialogRef.afterClosed().subscribe((result: Report | undefined) => {
-      if (result) {
-        this.updateReport.execute(result).subscribe(() => {
-          this.filterReports.execute({
-            name: this.currentNameFilter,
-            status: this.currentStatusFilter,
-          });
-        });
-      }
-    });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result: Report | undefined) => {
+        if (result) {
+          this.reportsUpdater.execute(result)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+              this.reportsFilterer.execute({
+                name: this.currentNameFilter,
+                status: this.currentStatusFilter,
+              });
+            });
+        }
+      });
   }
 
   onDelete(report: Report): void {
-    this.deleteReport.execute(report.id).subscribe(() => {
-      this.filterReports.execute({
-        name: this.currentNameFilter,
-        status: this.currentStatusFilter,
+    this.reportsDeleter.execute(report.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.reportsFilterer.execute({
+          name: this.currentNameFilter,
+          status: this.currentStatusFilter,
+        });
       });
-    });
   }
 }

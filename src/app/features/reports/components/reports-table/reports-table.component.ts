@@ -14,7 +14,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
   styleUrls: ['./reports-table.component.scss']
 })
 export class ReportsTableComponent implements OnChanges, AfterViewInit {
-  @Input() reports: Report[] = [];
+  @Input() reports: ReadonlyArray<Report> = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   @Output() edit = new EventEmitter<Report>();
@@ -25,7 +25,7 @@ export class ReportsTableComponent implements OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['reports']) {
-      this.dataSource.data = this.reports;
+      this.dataSource.data = [...this.reports];
     }
   }
 
