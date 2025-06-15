@@ -2,39 +2,49 @@ import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Report, ReportStatus } from '../../../../core/models/report.model';
-import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-reports-dialog',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './reports-dialog.component.html',
-  styleUrls: ['./reports-dialog.component.scss']
+  styleUrls: ['./reports-dialog.component.scss'],
 })
 export class ReportsDialogComponent {
-  editableReport: Report;
+  form: FormGroup;
 
   constructor(
+    private fb: FormBuilder,
     public dialogRef: MatDialogRef<ReportsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Report
   ) {
-    this.editableReport = { ...data };
+    this.form = this.fb.group({
+      description: [data.description, Validators.required],
+      status: [data.status, Validators.required],
+    });
   }
 
   onSave(): void {
-    this.dialogRef.close(this.editableReport);
+    if (this.form.valid) {
+      this.dialogRef.close({ ...this.data, ...this.form.value });
+    }
   }
 
   onCancel(): void {
