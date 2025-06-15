@@ -1,11 +1,11 @@
-<div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
-    <mat-form-field appearance="outline">
-      <mat-label>Buscar por nombre</mat-label>
+<div class="filters-container">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>🔍 Buscar por nombre</mat-label>
       <input matInput [(ngModel)]="internalName" placeholder="Ej. María" />
     </mat-form-field>
   
-    <mat-form-field appearance="outline">
-      <mat-label>Filtrar por estado</mat-label>
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>📂 Filtrar por estado</mat-label>
       <mat-select [(ngModel)]="internalStatus">
         <mat-option value="">Todos</mat-option>
         <mat-option [value]="ReportStatus.Pendiente">Pendiente</mat-option>
@@ -14,7 +14,14 @@
       </mat-select>
     </mat-form-field>
   
-    <button mat-raised-button color="primary" (click)="applyFilters()">Aplicar</button>
-    <button mat-stroked-button color="warn" (click)="clearFilters()">Limpiar</button>
+    <div class="filter-buttons">
+      <button mat-flat-button color="primary" (click)="applyFilters()">
+        Aplicar
+      </button>
+  
+      <button mat-stroked-button color="warn" (click)="clearFilters()">
+        Limpiar
+      </button>
+    </div>
   </div>
   

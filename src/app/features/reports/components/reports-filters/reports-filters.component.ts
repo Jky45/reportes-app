@@ -5,11 +5,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { ReportStatus } from '../../../../core/models/report.model';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-reports-filters',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatInputModule, MatSelectModule, MatButtonModule],
+  imports: [CommonModule, FormsModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule],
   templateUrl: './reports-filters.component.html',
   styleUrls: ['./reports-filters.component.scss']
 })
